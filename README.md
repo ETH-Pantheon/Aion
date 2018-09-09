@@ -25,7 +25,7 @@ Aion smart contract is deployed at:
 |**Network** | **Address**
 |------------|------------
 |MainNet     | 0x00
-|Ropsten     | 0x00
+|Ropsten     | 0x8ed61279333d85597D84c85891Fdb40Cca44ea7c
 
 <br>
 <br>
