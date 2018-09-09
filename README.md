@@ -144,6 +144,6 @@ contract MyContract{
 
 ## Fees:
 
-Aion charges a fee of about 0.00035 ETH per transaction (~ 0.10 USD). The fee at the moment of scheduling is maintained until the execution of the transaction. 
+Aion charges a fee of about 0.0005 ETH per transaction (~ 0.10 USD). The fee at the moment of scheduling is maintained until the execution of the transaction. 
 <br>
 <br>
