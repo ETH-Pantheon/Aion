@@ -78,8 +78,7 @@ pragma solidity ^0.4.24;
 contract Aion {
     uint256 public serviceFee;
     function ScheduleCall(uint256 blocknumber, address to, uint256 value, uint256 gaslimit, uint256 gasprice, bytes data, bool schedType) public payable returns (uint);
-    function cancellScheduledTx(uint256 blocknumber, address from, address to, uint256 value, uint256 gaslimit, uint256 gasprice,
-                         uint256 fee, bytes data, uint256 aionId, bool schedType) external returns(bool);
+    
 
 }
 
@@ -89,7 +88,7 @@ contract MyContract{
     address aionAccount;
 
     function scheduleTransaction(uint256 value, uint256 gaslimit, uint256 gasprice, bool time_or_block) public {
-        aion = Aion(0x10999AE703401312798EA437b02A9849fa43E5AB);
+        aion = Aion(0xFcFB45679539667f7ed55FA59A15c8Cad73d9a4E);
         uint256 callCost = value + gaslimit*gasprice + aion.serviceFee();
         uint256 txId;
         (txId,aionAccount) = aion.ScheduleCall.value(callCost)( block.number+15, address(this), value, gaslimit, gasprice, hex"00", time_or_block);
@@ -112,9 +111,7 @@ pragma solidity ^0.4.24;
 contract Aion {
     uint256 public serviceFee;
     function ScheduleCall(uint256 blocknumber, address to, uint256 value, uint256 gaslimit, uint256 gasprice, bytes data, bool schedType) public payable returns (uint,address);
-    function cancellScheduledTx(uint256 blocknumber, address from, address to, uint256 value, uint256 gaslimit, uint256 gasprice,
-                         uint256 fee, bytes data, uint256 aionId, bool schedType) external returns(bool);
-
+    
 }
 
 // Main contract
@@ -124,7 +121,7 @@ contract MyContract{
     address aionAccount;
     
     function schedule_rqsr(uint256 number) public {
-        aion = Aion(0x10999AE703401312798EA437b02A9849fa43E5AB);
+        aion = Aion(0xFcFB45679539667f7ed55FA59A15c8Cad73d9a4E);
         bytes memory data = abi.encodeWithSelector(bytes4(keccak256('sqrt(uint256)')),number); 
         uint callCost = 200000*1e9 + aion.serviceFee();
         uint256 txId;
