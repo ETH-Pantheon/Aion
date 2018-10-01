@@ -85,13 +85,11 @@ contract Aion {
 // Main contract
 contract MyContract{
     Aion aion;
-    address aionAccount;
 
     function scheduleTransaction(uint256 value, uint256 gaslimit, uint256 gasprice, bool time_or_block) public {
         aion = Aion(0xFcFB45679539667f7ed55FA59A15c8Cad73d9a4E);
         uint256 callCost = value + gaslimit*gasprice + aion.serviceFee();
-        uint256 txId;
-        (txId,aionAccount) = aion.ScheduleCall.value(callCost)( block.number+15, address(this), value, gaslimit, gasprice, hex"00", time_or_block);
+        aion.ScheduleCall.value(callCost)( block.number+15, address(this), value, gaslimit, gasprice, hex"00", time_or_block);
     }
       
     function () public payable {}
@@ -118,14 +116,12 @@ contract Aion {
 contract MyContract{
     uint256 public sqrtValue;
     Aion aion;
-    address aionAccount;
     
     function schedule_rqsr(uint256 number) public {
         aion = Aion(0xFcFB45679539667f7ed55FA59A15c8Cad73d9a4E);
         bytes memory data = abi.encodeWithSelector(bytes4(keccak256('sqrt(uint256)')),number); 
         uint callCost = 200000*1e9 + aion.serviceFee();
-        uint256 txId;
-        (txId, aionAccount) = aion.ScheduleCall.value(callCost)( block.number+15, address(this), 0, 200000, 1e9, data, false);
+        aion.ScheduleCall.value(callCost)( block.number+15, address(this), 0, 200000, 1e9, data, false);
     }
     
     function sqrt(uint256 number) public {
