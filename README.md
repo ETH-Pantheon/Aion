@@ -135,6 +135,46 @@ contract MyContract{
 <br>
 <br>
 
+
+### 3. Recurrent calls:
+
+This examples show how to schedule a recurrent call. (every one day in this example).
+```
+pragma solidity ^0.4.24; 
+
+// interface Aion
+contract Aion {
+    uint256 public serviceFee;
+    function ScheduleCall(uint256 blocknumber, address to, uint256 value, uint256 gaslimit, uint256 gasprice, bytes data, bool schedType) public payable returns (uint,address);
+
+}
+
+// Main contract
+contract MyContract{
+    uint256 public sqrtValue;
+    Aion aion;
+
+    constructor(uint256 number) public {
+        scheduleMyfucntion(number);
+    }
+
+    function scheduleMyfucntion(uint256 number) public {
+        aion = Aion(0xFcFB45679539667f7ed55FA59A15c8Cad73d9a4E);
+        bytes memory data = abi.encodeWithSelector(bytes4(keccak256('myfucntion(uint256)')),number); 
+        uint callCost = 200000*1e9 + aion.serviceFee();
+        aion.ScheduleCall.value(callCost)( block.timestamp + 1 day, address(this), 0, 200000, 1e9, data, true);
+    }
+
+    function myfucntion(uint256 number) public {
+        // do your task here and call again the function to schedule
+        scheduleMyfucntion(number);
+    } 
+
+    function () public payable {}
+
+}
+```
+
 ## Fees:
 
 Aion charges a fee of about 0.0005 ETH per transaction (~ 0.10 USD). The fee at the moment of scheduling is maintained until the execution of the transaction. 
