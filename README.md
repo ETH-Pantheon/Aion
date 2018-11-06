@@ -139,7 +139,7 @@ contract MyContract{
 ### 3. Recurrent calls:
 
 This examples show how to schedule a recurrent call. (every one day in this example).
-```
+```Solidity
 pragma solidity ^0.4.24; 
 
 // interface Aion
@@ -154,7 +154,7 @@ contract MyContract{
     uint256 public sqrtValue;
     Aion aion;
 
-    constructor(uint256 number) public {
+    constructor(uint256 number) public payable {
         scheduleMyfucntion(number);
     }
 
@@ -162,7 +162,7 @@ contract MyContract{
         aion = Aion(0xFcFB45679539667f7ed55FA59A15c8Cad73d9a4E);
         bytes memory data = abi.encodeWithSelector(bytes4(keccak256('myfucntion(uint256)')),number); 
         uint callCost = 200000*1e9 + aion.serviceFee();
-        aion.ScheduleCall.value(callCost)( block.timestamp + 1 day, address(this), 0, 200000, 1e9, data, true);
+        aion.ScheduleCall.value(callCost)( block.timestamp + 1 days, address(this), 0, 200000, 1e9, data, true);
     }
 
     function myfucntion(uint256 number) public {
@@ -173,6 +173,7 @@ contract MyContract{
     function () public payable {}
 
 }
+
 ```
 
 ## Fees:
