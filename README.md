@@ -1,12 +1,12 @@
 # Aion
-A system for Scheduling transactions with arbitrary bytecode on the Ethereum Network. 
-  
-Given the structure of Ethereum, it is not possible to schedule calls to contracts at a point in the future. This is because smart contracts cannot subscribe to events and therefore all the actions need to be triggered by an entity external to the contract. In many applications, one may be interested in scheduling an operation (transaction, execution of a particular function) in the future. 
+A system for Scheduling transactions with arbitrary bytecode on the Ethereum Network.
 
-Aion is a smart contract-based system that solves this problem. With Aion, transactions of any type (ether transactions, tokens transfers, contract's function executions, contracts deployments, and in general any bytecode instruction) can be scheduled to be executed at a particular time or block in the future. 
+Given the structure of Ethereum, it is not possible to schedule calls to contracts at a point in the future. This is because smart contracts cannot subscribe to events and therefore all the actions need to be triggered by an entity external to the contract. In many applications, one may be interested in scheduling an operation (transaction, execution of a particular function) in the future.
+
+Aion is a smart contract-based system that solves this problem. With Aion, transactions of any type (ether transactions, tokens transfers, contract's function executions, contracts deployments, and in general any bytecode instruction) can be scheduled to be executed at a particular time or block in the future.
 
 For further information about how Aion works go to [Aion's Home Page](https://www.aion.ethpantheon.com/index.html#howitworks)<br>
-For scheduling transactions through Aion's graphical interface go to [Aion's App](https://www.aion.ethpantheon.com/aionapp.html) 
+For scheduling transactions through Aion's graphical interface go to [Aion's App](https://www.aion.ethpantheon.com/aionapp.html)
 <br>
 <br>
 ## Features:
@@ -49,7 +49,7 @@ function ScheduleCall(uint256 blocknumber, address to, uint256 value, uint256 ga
 |schedType (bool)| true: schedule using timestamp, false: schedule using blocknumber|
 
 <br>
-This function returns the id of the scheduled transaction and the address of the user account created exclusively for the user. This account will store all the data or/and ether related to the transaction and can be used only by the user through Aion smart contract. In case that is necessary, the user can cancel the transaction at any time without the involvement of a third party and receive all the funds without having to pay any fees to Aion. 
+This function returns the id of the scheduled transaction and the address of the user account created exclusively for the user. This account will store all the data or/and ether related to the transaction and can be used only by the user through Aion smart contract. In case that is necessary, the user can cancel the transaction at any time without the involvement of a third party and receive all the funds without having to pay any fees to Aion.
 
 <br>
 <br>
@@ -61,24 +61,33 @@ function cancellScheduledTx(uint256 blocknumber, address from, address to, uint2
 ```
 | **Parameter** | **Description**|
 |---------------|----------------|
-|aionId (uint256)| id of the transaction to be cancelled
+|blocknumber (uint256)| Block or timestamp at which the transaction should be executed (see *schedType* parameter)|
+| from (address) | sender of the transaction|
+|to (address) | recipient of the transaction|
+|value (uint256)| Amount of Wei to have been transferred|
+|gaslimit (uint256)| Maximum gas specified for the transaction|
+|gasprice (uint256)| gas price specified for the transaction|
+|fee (uint256) | the service fee for the transaction|
+|data (bytes) | transaction data|
+|aionId (uint256)| id of the transaction to be cancelled|
+|schedType (bool)| true: scheduled using timestamp, false: scheduled using blocknumber|
 
 <br>
 
-## Examples: 
+## Examples:
 
 ### 1. Scheduling an ether transaction:
 The example below schedules an ether transaction to a third party at a particular blocknumber. At block/time of execution, if the transaction fails, the ether is returned to the contract that scheduled the transaction. Also, and importantly, the estimated unused gas is returned to the contract.
 <br>
 <br>
 ```solidity
-pragma solidity ^0.4.24; 
+pragma solidity ^0.4.24;
 
 // interface Aion
 contract Aion {
     uint256 public serviceFee;
     function ScheduleCall(uint256 blocknumber, address to, uint256 value, uint256 gaslimit, uint256 gasprice, bytes data, bool schedType) public payable returns (uint);
-    
+
 
 }
 
@@ -91,9 +100,9 @@ contract MyContract{
         uint256 callCost = value + gaslimit*gasprice + aion.serviceFee();
         aion.ScheduleCall.value(callCost)( block.number+15, address(this), value, gaslimit, gasprice, hex"00", time_or_block);
     }
-      
+
     function () public payable {}
-    
+
 }
 ```
 <br>
@@ -103,33 +112,33 @@ contract MyContract{
 The example below schedules the execution of a function in the same contract for a particular block/time in the future. Note that the function can be in another contract as long as the correct bytecode (data) is provided. The estimated unused gas is returned to the contract.
 
 ```solidity
-pragma solidity ^0.4.24; 
+pragma solidity ^0.4.24;
 
 // interface Aion
 contract Aion {
     uint256 public serviceFee;
     function ScheduleCall(uint256 blocknumber, address to, uint256 value, uint256 gaslimit, uint256 gasprice, bytes data, bool schedType) public payable returns (uint,address);
-    
+
 }
 
 // Main contract
 contract MyContract{
     uint256 public sqrtValue;
     Aion aion;
-    
+
     function schedule_rqsr(uint256 number) public {
         aion = Aion(0xFcFB45679539667f7ed55FA59A15c8Cad73d9a4E);
-        bytes memory data = abi.encodeWithSelector(bytes4(keccak256('sqrt(uint256)')),number); 
+        bytes memory data = abi.encodeWithSelector(bytes4(keccak256('sqrt(uint256)')),number);
         uint callCost = 200000*1e9 + aion.serviceFee();
         aion.ScheduleCall.value(callCost)( block.number+15, address(this), 0, 200000, 1e9, data, false);
     }
-    
+
     function sqrt(uint256 number) public {
         sqrtValue = number**2;
-    } 
-    
+    }
+
     function () public payable {}
-    
+
 }
 ```
 <br>
@@ -140,7 +149,7 @@ contract MyContract{
 
 This examples show how to schedule a recurrent call. (every one day in this example).
 ```Solidity
-pragma solidity ^0.4.24; 
+pragma solidity ^0.4.24;
 
 // interface Aion
 contract Aion {
@@ -160,7 +169,7 @@ contract MyContract{
 
     function scheduleMyfucntion(uint256 number) public {
         aion = Aion(0xFcFB45679539667f7ed55FA59A15c8Cad73d9a4E);
-        bytes memory data = abi.encodeWithSelector(bytes4(keccak256('myfucntion(uint256)')),number); 
+        bytes memory data = abi.encodeWithSelector(bytes4(keccak256('myfucntion(uint256)')),number);
         uint callCost = 200000*1e9 + aion.serviceFee();
         aion.ScheduleCall.value(callCost)( block.timestamp + 1 days, address(this), 0, 200000, 1e9, data, true);
     }
@@ -168,7 +177,7 @@ contract MyContract{
     function myfucntion(uint256 number) public {
         // do your task here and call again the function to schedule
         scheduleMyfucntion(number);
-    } 
+    }
 
     function () public payable {}
 
@@ -178,6 +187,6 @@ contract MyContract{
 
 ## Fees:
 
-Aion charges a fee of about 0.0005 ETH per transaction (~ 0.10 USD). The fee at the moment of scheduling is maintained until the execution of the transaction. 
+Aion charges a fee of about 0.0005 ETH per transaction (~ 0.10 USD). The fee at the moment of scheduling is maintained until the execution of the transaction.
 <br>
 <br>
