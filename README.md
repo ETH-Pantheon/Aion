@@ -160,23 +160,22 @@ contract Aion {
 
 // Main contract
 contract MyContract{
-    uint256 public sqrtValue;
     Aion aion;
 
-    constructor(uint256 number) public payable {
-        scheduleMyfucntion(number);
+    constructor() public payable {
+        scheduleMyfucntion();
     }
 
-    function scheduleMyfucntion(uint256 number) public {
+    function scheduleMyfucntion() public {
         aion = Aion(0xFcFB45679539667f7ed55FA59A15c8Cad73d9a4E);
-        bytes memory data = abi.encodeWithSelector(bytes4(keccak256('myfucntion(uint256)')),number);
+        bytes memory data = abi.encodeWithSelector(bytes4(keccak256('myfucntion(uint256)')));
         uint callCost = 200000*1e9 + aion.serviceFee();
         aion.ScheduleCall.value(callCost)( block.timestamp + 1 days, address(this), 0, 200000, 1e9, data, true);
     }
 
-    function myfucntion(uint256 number) public {
+    function myfucntion() public {
         // do your task here and call again the function to schedule
-        scheduleMyfucntion(number);
+        scheduleMyfucntion();
     }
 
     function () public payable {}
