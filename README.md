@@ -168,7 +168,7 @@ contract MyContract{
 
     function scheduleMyfucntion() public {
         aion = Aion(0xFcFB45679539667f7ed55FA59A15c8Cad73d9a4E);
-        bytes memory data = abi.encodeWithSelector(bytes4(keccak256('myfucntion(uint256)')));
+        bytes memory data = abi.encodeWithSelector(bytes4(keccak256('myfucntion()')));
         uint callCost = 200000*1e9 + aion.serviceFee();
         aion.ScheduleCall.value(callCost)( block.timestamp + 1 days, address(this), 0, 200000, 1e9, data, true);
     }
