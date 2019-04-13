@@ -1,0 +1,445 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=0.4">
+	
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Aion Decentralized App</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.0/semantic.min.css">
+    <link rel="icon" href="images\favicon.png">
+</head>
+
+
+<body>
+
+		<div class="ui fixed inverted back medium menu">
+			<div class="ui container">
+			
+			<a href='index.html' class="item active">Aion Home</a>
+			<a href='#contactus' class="item">Contact Us</a>
+			</div>
+		</div>
+		
+	<div class="row">
+		<p><br><br><br></p>
+	</div>
+	
+
+	<div class="row">
+		<div class="ui three column grid">
+			
+			<div class="three wide column">
+			</div>
+			
+			<div class="ten wide column">	
+				<div class="ui raised segment">
+					<a class="ui teal left big ribbon label"><h3> Information </h3></a>
+					<p>
+					<table id="accountdetails" class="ui single line small table">
+						<thead>
+							<tr>
+								<th>My Aion Account</th>
+								<th>Total Balance (ETH)</th>
+								<th>Network</th>
+								<th>Block Number</th>
+								<!-- <th>Action</th> -->
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<!-- <td></td> -->
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	
+	<div class="row">
+		<div class="ui three column grid">
+			
+			<div class="three wide column">
+			</div>
+			
+			<div class="ten wide column">				
+				<div class="ui raised segment">
+					<a class="ui teal left big ribbon label"><h4> Schedule Transaction</h4></a>
+					<p>
+					<div class="ui form">
+						<div class="inline fields">
+							<div class="field">
+							<div class="ui radio checkbox">
+								<input id='timemode' type="radio" name='mode' onclick='setBlockTime()' checked="">
+								<label>By Time</label>
+							</div>
+							</div>
+							<div class="field">
+							<div class="ui radio checkbox">
+								<input id='blockmode' type="radio" name='mode' onclick='setBlockTime()'>
+								<label>By Blocks</label>
+							</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="ui top attached tabular menu">
+						<a class="item active" data-tab="ethTx">ETH</a>
+						<a class="item" data-tab="erc20Tx">ERC-20</a>
+						<a class="item" data-tab="advTx">Advanced</a>
+					</div>
+						  
+					<div class="ui bottom attached tab segment active" data-tab="ethTx">
+						<form class="ui compact small form">
+							<div class="two fields">
+								<div class="field">
+									<div class="ui labeled input">
+										<div style="width:30%" class="ui label"> To </div>
+										<input type="text" name="eth_to" placeholder="Address">
+									</div>
+								</div>
+									
+								<div class="field">
+									<button class="ui fluid teal button" type="button" onclick="eth_scheduleTransaction()">Submit</button>	
+								</div>
+							</div>
+									
+							<div class="two fields">
+								<div class="field">
+									<div class="ui labeled input">
+										<div style="width:30%" class="ui label"> Value (ETH) </div>
+										<input type="number" name="eth_value" placeholder='Amount in Ether' min="0" step="0.000000000000000001">
+									</div>
+								</div>
+								<div class="field">
+									<div name="feeField" class="ui labeled input">
+										<div name="eth_fee" value="0" style="text-align:center" class="ui fluid basic label"> Execution Fee: 0 </div>
+									</div>
+								</div>
+							</div>
+				
+				
+							<div class="two fields">
+								<div class="field" id="eth_TimeBlockField">
+									<div class="ui calendar">
+										<div class="ui labeled input">
+											<div style="width:30%" class="ui label"> Time </div>
+											<input type="text" name="eth_block" placeholder="Date">
+										</div>
+									</div>
+								</div>
+								<div class="field">
+								</div>
+							</div>
+									
+									
+							<div class="two fields">
+								<div class="field">
+									<div class="ui labeled input">
+										<div style="width:30%" class="ui label"> Gas Price (Gwei) </div>
+										<input type="number" name="eth_gasprice" value="1" placeholder='Gas price in Giga wei' min="1" step="1">
+									</div>
+								</div>
+							
+								<div class="field">				
+								</div>
+							</div>
+							
+						</form>
+					</div>
+					
+					<div class="ui bottom attached tab segment" data-tab="erc20Tx">
+						<h4>1. Schedule Transaction</h4>
+						<form class="ui compact small form">
+							<div class="two fields">
+								<div class="field">
+									<div class="ui labeled input">
+										<div style="width:30%" class="ui label"> To </div>
+										<input type="text" name="erc20_to" placeholder="Address">
+									</div>
+								</div>
+							
+								<div class="field">
+									<button class="ui fluid teal button" type="button" onclick="erc20_scheduleTransaction()">Submit</button>	
+								</div>
+							</div>
+							
+							<div class="two fields">
+								<div class="field">
+									<div class="ui labeled input">
+										<div style="width:30%" class="ui label"> Token Amount </div>
+										<input type="number" name="erc20_value" placeholder='Amount' min="0" step="0.1">
+									</div>
+								</div>
+								
+								<div class="field">
+									<div name="feeField" class="ui labeled input">
+										<div name="erc20_fee" value="0" style="text-align:center" class="ui fluid basic label"> Execution Fee: 0 </div>
+									</div>
+								</div>
+							</div>
+		
+		
+							<div class="two fields">
+								<div class="field" id="erc20_TimeBlockField">
+									<div class="ui calendar">
+										<div class="ui labeled input">
+											<div style="width:30%" class="ui label"> Time </div>
+												<input type="text" name="erc20_block" placeholder="Date">
+										</div>
+									</div>
+		
+								</div>
+								
+								<div class="field">
+									<div class="ui labeled input">
+										<div style="width:30%" class="ui blue label"> Token Contract </div>
+										<input type="text" name="erc20_address" placeholder='Address'>
+									</div>
+								</div>
+							</div>
+							
+							
+							<div class="two fields">
+								<div class="field">
+									<div class="ui labeled input">
+										<div style="width:30%" class="ui label"> Gas Price (Gwei) </div>
+										<input type="number" name="erc20_gasprice" value="1" placeholder='Gas price in Giga wei' min="1" step="1">
+									</div>
+								</div>
+							
+								<div class="field">				
+								</div>
+							</div>
+						
+							<!-- <p>Instructions: In order to schedule token transfers you need an Aion account. Scheduling token transfers requires two transactions. One transaction to send the tokens to you Aion account and another transaction to schedule the token transfer. When you click "Submit" Metamask will show two transactions to approve.</p> -->
+							<br>
+							<h3>2 Transfer Tokens to your Aion Account</h3>
+							<div class="two fields">
+									<div class="field" id="erc20_amount_tx">
+										<div class="ui calendar">
+											<div class="ui labeled input">
+												<div style="width:30%" class="ui label"> Token Amount </div>
+												<input type="number" name="erc20_token_amount" min="0" step="0.1">
+												<div style="width:10px"></div>
+												<button id="erc20transfer" class="ui blue button" type="button" onclick="erc20_transfer()">Transfer Tokens</button>
+											</div>
+										</div>
+			
+									</div>
+									
+									<div class="field">			
+									</div>
+								</div>
+
+						</form>
+						
+					</div>
+					
+					<div class="ui bottom attached tab segment" data-tab="advTx">
+						<form class="ui compact small form">
+							<div class="two fields">
+								<div class="field">
+									<div class="ui labeled input">
+										<div style="width:30%" class="ui label"> To </div>
+										<input type="text" name="adv_to" placeholder="Address">
+									</div>
+								</div>
+							
+								<div class="field">
+									<button class="ui fluid button" type="button" onclick="adv_scheduleTransaction()">Submit</button>	
+								</div>
+							</div>
+							
+							<div class="two fields">
+								<div class="field">
+									<div class="ui labeled input">
+										<div style="width:30%" class="ui label"> Value (ETH) </div>
+										<input type="number" name="adv_value" placeholder='Amount in Ether' min="0" step="0.000000000000000001">
+									</div>
+								</div>
+								
+								<div class="field">
+									<div name="feeField" class="ui labeled input">
+										<div name="adv_fee" value="0" style="text-align:center" class="ui fluid basic label"> Execution Fee: 0 </div>
+									</div>
+								</div>
+							</div>
+		
+		
+							<div class="two fields">
+								<div class="field" id="adv_TimeBlockField">
+									<div class="ui calendar">
+										<div class="ui labeled input">
+											<div style="width:30%" class="ui label"> Time </div>
+												<input type="text" name="adv_block" placeholder="Date">
+										</div>
+									</div>
+		
+								</div>
+								
+								<div class="field">
+									<div class="ui labeled input">
+										<div style="width:30%" class="ui label"> Gas Limit </div>
+										<input type="number" name="adv_gaslimit" value="100000" placeholder="100000" min="100000" step="5000">
+									</div>
+									
+								</div>
+							</div>
+							
+							
+							<div class="two fields">
+								<div class="field">
+									<div class="ui labeled input">
+										<div style="width:30%" class="ui label"> Gas Price (Gwei) </div>
+										<input type="number" name="adv_gasprice" value="1" placeholder='Gas price in Giga wei' min="1" step="1">
+									</div>
+								</div>
+							
+								<div class="field">
+									<div class="ui labeled input">
+										<div style="width:30%" class="ui label"> Data </div>
+										<input type="text" name="adv_data" placeholder='Bytecode to execute (0x00)' value="0x00">
+									</div>				
+								</div>
+							</div>
+						</form>
+					</div>
+					<br>
+					<table id="submitedTxs" class="ui single line small table">
+						<thead>
+							<tr>
+								<th>Recent transactions</th>
+								<th>Status</th>
+							</tr>
+						</thead>
+						<tbody>
+						</tbody>
+					</table>
+					<br>
+
+
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<div class="row">
+		<br><br>
+	</div>
+
+
+	<div class="row">
+
+		<div class="ui three column grid">
+			
+			<div class="three wide column">
+			</div>
+			
+			<div class="ten wide column">	
+				<div class="ui raised segment">
+					<a class="ui teal left big ribbon label"><h3> Transaction History</h3></a>
+					<p>
+				
+					<div class="ui two column grid">
+						<div class="seven wide column">
+						</div>
+							
+						<div class="nine wide column">
+							<form class="ui compact small form">
+								<div class="three fields">
+									<div class="field">
+										<div class="ui toggle checkbox">
+											<input type="checkbox" name="Schedulled" onclick="filterTable(this)" checked="">
+											<label>Scheduled</label>
+										</div>
+									</div>
+
+									<div class="field">
+										<div class="ui toggle checkbox">
+											<input type="checkbox" name="Executed" onclick="filterTable(this)" checked="">
+											<label>Executed</label>
+										</div>
+									</div>
+
+									<div class="field">
+										<div class="ui toggle checkbox">
+											<input type="checkbox" name="Cancelled" onclick="filterTable(this)">
+											<label>Cancelled</label>
+										</div>
+									</div>
+
+								</div>
+							</form>
+						</div>
+					</div>
+
+					<table id="activeTxs" class="ui single line small table">
+						<thead>
+							<tr>
+								<th>To</th>
+								<th>Value (ETH)</th>
+								<th>Block/TimeStamp</th>
+								<th>Status</th>
+								<th>Action</th>
+							</tr>
+						</thead>
+						<tbody>
+						</tbody>
+					</table>
+
+				</div>
+			</div>	
+			
+			<div class="three wide column">
+			</div>
+
+		</div>
+	</div>
+			
+	<div id="contactus" class="ui divider"></div>
+    <div style="background-color:black;text-align:center" class="row">
+        <div class="ui five column grid">
+            <div class="three wide column">
+            </div>
+            <div class="three wide column">
+            </div>
+            <div class="three wide column">
+                <p style="color: white"><br>
+                Contact Us:<br>
+                <a href="mailto:aion@ethpantheon.com">aion@ethpantheon.com</a><br>
+                2018<br>
+                </p> 
+            </div>
+            <div class="three wide column">
+            </div>
+            <div class="three wide column">               
+                <br>
+                <img style="margin-left: auto;margin-right: 0; display:block;" class="ui small image" src="images\logo.png">
+            </div>        
+        </div>
+    </div>
+	
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.0/semantic.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui-calendar/0.0.8/calendar.min.js"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui-calendar/0.0.8/calendar.min.css">
+
+    <script src="js\aionapp.js?v0.007">
+	
+	</script>
+
+
+
+</body>
+</html>
