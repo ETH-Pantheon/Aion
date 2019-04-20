@@ -186,6 +186,6 @@ contract MyContract{
 
 ## Fees:
 
-Aion charges a fee of about 0.10 USD per transaction. The fee at the moment of scheduling is maintained until the execution of the transaction. 
+Aion charges a fee of 120Gwei (about 2 cents) per transaction. The fee at the moment of scheduling is maintained until the execution of the transaction. 
 <br>
 <br>
