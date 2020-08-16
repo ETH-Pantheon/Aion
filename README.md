@@ -26,6 +26,8 @@ Aion smart contract is deployed at:
 |------------|------------
 |MainNet     | [0xCBe7AB529A147149b1CF982C3a169f728bC0C3CA](https://etherscan.io/address/0xCBe7AB529A147149b1CF982C3a169f728bC0C3CA)
 |Ropsten     | [0xFcFB45679539667f7ed55FA59A15c8Cad73d9a4E](https://ropsten.etherscan.io/address/0xFcFB45679539667f7ed55FA59A15c8Cad73d9a4E)
+|Ropsten     | [0xeFc1d6479e529D9e7C359fbD16B31D405778CE6e](https://ropsten.etherscan.io/address/0xeFc1d6479e529D9e7C359fbD16B31D405778CE6e)
+
 
 <br>
 <br>
